@@ -16,6 +16,9 @@ optional arguments:
   -s S                  Maximum size in MB a bucket can hold
   -f F                  Number of max file a bucket can hold
   -p PATH, --path PATH  Path to the mercurial clone
+  -m MSG, --msg MSG     Custom msg to be used when performing the comments.
+                        Use {bucket}, {total} and {files} for extra
+                        information.
   -d, --dry             Perform a dryrun printing into the log the content of
                         the possible buckets
 ```
