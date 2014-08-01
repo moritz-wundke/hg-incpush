@@ -40,8 +40,14 @@ __author__ = 'Moritz Wundke'
 
 start_time = []
 
-def split(arr, count):
-    return [arr[i::count] for i in range(count)]
+def split(arr, size):
+     arrs = []
+     while len(arr) > size:
+         pice = arr[:size]
+         arrs.append(pice)
+         arr   = arr[size:]
+     arrs.append(arr)
+     return arrs
 
 def time_push():
     """
@@ -111,7 +117,6 @@ def hg_add(repo_path, is_dry_run, files):
                 )
             stdout = proc.communicate()[0]
             if proc.returncode != 0:
-                print(stdout)
                 raise RuntimeError("Add command failed to succeed! {error}".format(error=stdout))
         else:
             print("  > {files}".format(files=bunch))
