@@ -26,9 +26,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
 # IN THE SOFTWARE.
 #
-from mercurial import ui, hg
-from mercurial.node import hex
-from mercurial import commands
 import os
 import time
 import subprocess
@@ -132,7 +129,9 @@ def get_buckets(files, max_files=200, max_bucket_size=200):
             if not bucket_num in buckets:
                 buckets[bucket_num] = []
 
-            file_size = os.path.getsize(status[1]) / float(1024 * 1024)
+            file_size = 0
+            if os.path.exists(status[1]):
+                file_size = os.path.getsize(status[1]) / float(1024 * 1024)
             buckets[bucket_num].append(status[1])
 
             if len(buckets[bucket_num]) >= max_files or file_size_counter >= max_bucket_size:
