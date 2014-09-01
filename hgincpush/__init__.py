@@ -118,7 +118,7 @@ def hg_add(repo_path, is_dry_run, files):
         else:
             print("  > {files}".format(files=bunch))
 
-def get_buckets(files, max_files=200, max_bucket_size=200):
+def get_buckets(repo_path, files, max_files=200, max_bucket_size=200):
     buckets = {}
     bucket_num = 1
     file_counter = 0
@@ -129,9 +129,11 @@ def get_buckets(files, max_files=200, max_bucket_size=200):
             if not bucket_num in buckets:
                 buckets[bucket_num] = []
 
+            path = os.path.join(repo_path, status[1])
             file_size = 0
-            if os.path.exists(status[1]):
-                file_size = os.path.getsize(status[1]) / float(1024 * 1024)
+            if os.path.exists(path):
+                file_size = os.path.getsize(path) / float(1024 * 1024)
+
             buckets[bucket_num].append(status[1])
 
             if len(buckets[bucket_num]) >= max_files or file_size_counter >= max_bucket_size:
@@ -158,7 +160,7 @@ def commit_bucket(repo_path, is_dry_run, files, msg):
     hg_commit(repo_path, is_dry_run, msg)
 
 def do_push_buckets(repo_path, is_dry_run, max_files, max_bucket_size, template_msg):
-    buckets = get_buckets(hg_status(repo_path, is_dry_run), max_files=max_files, max_bucket_size=max_bucket_size)
+    buckets = get_buckets(repo_path, hg_status(repo_path, is_dry_run), max_files=max_files, max_bucket_size=max_bucket_size)
     push_buckets(repo_path, is_dry_run, buckets, template_msg)
 
 def main():
